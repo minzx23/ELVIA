@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 type MenuItem =
   | { id: string; label: string; type: 'link'; href: string }
@@ -24,66 +24,139 @@ const MENU_ITEMS: MenuItem[] = [
 
 export default function HeaderMenu() {
   const [openId, setOpenId] = useState<string | null>(null);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const menuRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
+
+  const closeAll = () => {
+    setOpenId(null);
+    setIsMobileOpen(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpenId(null);
+        closeAll();
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <nav ref={menuRef} className='flex items-center gap-8'>
-      {MENU_ITEMS.map((item) => {
-        if (item.type === 'link') {
+      <ul className='hidden items-center gap-8 md:flex'>
+        {MENU_ITEMS.map((item) => {
+          if (item.type === 'link') {
+            return (
+              <li key={item.id}>
+                <Link
+                  href={item.href}
+                  onClick={closeAll}
+                  className='text-sm text-gray-200 hover:text-white active:text-white'
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          }
+
+          const isOpen = openId === item.id;
           return (
-            <Link
-              key={item.id}
-              href={item.href}
-              onClick={() => setOpenId(null)}
-              className='text-sm text-gray-200 hover:text-white active:text-white'
-            >
-              {item.label}
-            </Link>
-          );
-        }
+            <li key={item.id} className='relative'>
+              <button
+                onClick={() => setOpenId(isOpen ? null : item.id)}
+                aria-expanded={isOpen}
+                className='text-sm text-gray-200 hover:text-white active:text-white'
+              >
+                {item.label}
+              </button>
 
-        const isOpen = openId === item.id;
-
-        return (
-          <div key={item.id} className='relative'>
-            <button
-              onClick={() => setOpenId(isOpen ? null : item.id)}
-              aria-expanded={isOpen}
-              className='text-sm text-gray-200 hover:text-white active:text-white'
-            >
-              {item.label}
-            </button>
-            {isOpen && (
-              <ul className='absolute top-full right-0 z-50 mt-2 w-40 rounded-md bg-white py-2 shadow-lg'>
+              <ul
+                className={`absolute top-full right-0 z-50 mt-3 w-44 origin-top-right rounded-lg border border-black/5 bg-[#16305A] py-2 shadow-xl ring-1 ring-black/5 transition-all duration-150 ease-out ${
+                  isOpen
+                    ? 'translate-y-0 scale-100 opacity-100'
+                    : 'pointer-events-none -translate-y-1 scale-95 opacity-0'
+                }`}
+              >
                 {item.children.map((child) => (
                   <li key={child.href}>
                     <Link
                       href={child.href}
-                      onClick={() => setOpenId(null)}
-                      className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                      onClick={closeAll}
+                      className='block px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10 hover:text-white active:text-white'
                     >
                       {child.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            )}
-          </div>
-        );
-      })}
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* ── 모바일 햄버거 버튼 ── */}
+      <button
+        onClick={() => setIsMobileOpen((prev) => !prev)}
+        aria-expanded={isMobileOpen}
+        aria-label='메뉴 열기'
+        className='text-white md:hidden'
+      >
+        {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* ── 모바일 메뉴 ── */}
+      {isMobileOpen && (
+        <div className='absolute top-full left-0 z-50 w-full border-t border-white/10 bg-[#0E2447] md:hidden'>
+          <ul className='flex flex-col px-8 py-4'>
+            {MENU_ITEMS.map((item) => {
+              if (item.type === 'link') {
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      onClick={closeAll}
+                      className='block py-3 text-sm text-gray-200 hover:text-white active:text-white'
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              }
+
+              const isOpen = openId === item.id;
+              return (
+                <li key={item.id}>
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : item.id)}
+                    aria-expanded={isOpen}
+                    className='flex w-full items-center justify-between py-3 text-sm text-gray-200 active:text-white'
+                  >
+                    {item.label}
+                  </button>
+                  <ul
+                    className={`overflow-hidden pl-4 transition-all duration-200 ease-out ${
+                      isOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    {item.children.map((child) => (
+                      <li key={child.href}>
+                        <Link
+                          href={child.href}
+                          onClick={closeAll}
+                          className='block py-2 text-sm text-gray-400 active:text-white'
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }
