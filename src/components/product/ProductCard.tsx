@@ -19,18 +19,20 @@ export default function ProductCard({
   return (
     <div>
       {variant === 'home' ? (
-        <div className='flex flex-col gap-5 rounded-md border border-gray-300 px-5.25 py-6.25'>
+        <div className='flex flex-col gap-5 rounded-md border border-gray-300 px-5.25 py-6.25 lg:gap-2 lg:py-3'>
           <Image
             src={image}
             alt='product'
-            width={316}
-            height={130}
-            className='md:w-77 lg:w-48.75'
+            width={270}
+            height={168}
+            className='self-center object-cover md:w-77 lg:h-21 lg:w-33.75'
           />
-          <div className='flex flex-col gap-3'>
+          <div className='flex flex-col gap-2'>
             <p className='text-[16px] font-bold lg:text-[14px]'>{name}</p>
             <p className='text-[13px] lg:text-[12px]'>{description}</p>
-            <ShowButton />
+            <div className='flex justify-end'>
+              <ShowButton />
+            </div>
           </div>
         </div>
       ) : (
@@ -39,7 +41,9 @@ export default function ProductCard({
           <div className='flex flex-col gap-3'>
             <p className='text-[16px] font-bold'>{name}</p>
             <p className='text-[13px]'>{description}</p>
-            <ShowButton />
+            <div className='flex justify-end'>
+              <ShowButton />
+            </div>
           </div>
         </div>
       )}
