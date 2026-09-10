@@ -1,7 +1,5 @@
 import ProductCard from '@/components/product/ProductCard';
-import BannerButton from '@/components/ui/BannerButton';
-import HighlightText from '@/components/ui/HighlightText';
-import { banner, company } from '@/data/content';
+import { company } from '@/data/content';
 import { products } from '@/data/product';
 import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -10,25 +8,15 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div>
-      <div className='flex flex-col gap-4 bg-[#97b1db] px-16 py-8'>
-        <h1 className='text-[24px] font-bold text-white md:text-[30px] lg:text-[25px]'>
-          <HighlightText text={banner.title} highlight={banner.titleHighlight} />
-        </h1>
-        <p className='text-[14px] text-white md:text-[14.5px] lg:text-[13.5px]'>
-          <HighlightText
-            text={banner.description}
-            highlight={banner.descriptionHighlight}
-            after={banner.description2}
-          />
-        </p>
-        <BannerButton />
+      <div className='w-full'>
+        <video className='h-auto w-full' src='/banner_video.mp4' autoPlay loop muted playsInline />
       </div>
 
       <div className='flex flex-col'>
         <div className='flex items-center justify-between px-16 py-8 lg:py-4'>
           <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>주요 제품</h3>
           <div className='flex items-center gap-1 text-gray-400 hover:cursor-pointer'>
-            <Link href='/product' className='text-[12px]'>
+            <Link href='/products/doorlock' className='text-[12px]'>
               전체보기
             </Link>
             <ChevronRight size={14} />
@@ -39,10 +27,12 @@ export default function Home() {
             .filter((product) => product.isHome)
             .map((product) => (
               <ProductCard
+                id={product.id}
                 key={product.id}
                 image={product.images[0]}
                 name={product.name}
                 description={product.description}
+                category={product.category}
               />
             ))}
         </div>
