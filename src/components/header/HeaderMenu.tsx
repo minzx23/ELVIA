@@ -15,8 +15,8 @@ const MENU_ITEMS: MenuItem[] = [
     label: '제품 소개',
     type: 'dropdown',
     children: [
-      { label: '도어락', href: '/products/doorlock' },
-      { label: '악세사리', href: '/products/accessory' },
+      { label: '도어락', href: '/doorlock' },
+      { label: '악세사리', href: '/accessory' },
     ],
   },
   { id: 'contact', label: '고객 문의', type: 'link', href: '/contact' },
@@ -44,7 +44,7 @@ export default function HeaderMenu() {
 
   return (
     <nav ref={menuRef} className='flex items-center gap-8'>
-      <ul className='hidden items-center gap-8 md:flex'>
+      <ul className='hidden items-center gap-[clamp(1.5rem,6vw,5rem)] md:flex'>
         {MENU_ITEMS.map((item) => {
           if (item.type === 'link') {
             return (
@@ -52,7 +52,7 @@ export default function HeaderMenu() {
                 <Link
                   href={item.href}
                   onClick={closeAll}
-                  className='text-sm text-gray-200 hover:text-white active:text-white'
+                  className='lg:text-md text-gray-200 hover:text-white active:text-white'
                 >
                   {item.label}
                 </Link>
@@ -66,7 +66,7 @@ export default function HeaderMenu() {
               <button
                 onClick={() => setOpenId(isOpen ? null : item.id)}
                 aria-expanded={isOpen}
-                className='text-sm text-gray-200 hover:text-white active:text-white'
+                className='lg:text-md text-gray-200 hover:text-white active:text-white'
               >
                 {item.label}
               </button>
