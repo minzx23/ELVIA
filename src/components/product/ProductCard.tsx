@@ -25,7 +25,7 @@ export default function ProductCard({
   return (
     <div>
       {variant === 'home' ? (
-        <div className='flex h-102 w-100 flex-col gap-5 rounded-md px-5.25 py-6.25 lg:h-78 lg:w-75 lg:gap-2 lg:py-4'>
+        <div className='flex h-102 w-100 flex-col gap-5 rounded-md border border-gray-300 px-5.25 py-6.25 lg:h-80 lg:w-75 lg:gap-2 lg:py-4'>
           <Image
             src={image}
             alt='product'
@@ -34,8 +34,8 @@ export default function ProductCard({
             className='aspect-square h-auto self-center object-cover lg:w-40'
           />
           <div className='flex flex-col gap-2'>
-            <p className='text-[16px] font-bold lg:text-[14px]'>{name}</p>
-            <p className='text-[13px] lg:text-[12px]'>{description}</p>
+            <p className='text-[18px] font-bold lg:text-[16px]'>{name}</p>
+            <p className='text-[15px] lg:text-[14px]'>{description}</p>
             <div className='mt-auto flex justify-end'>
               <ShowButton id={id} category={category} />
             </div>
