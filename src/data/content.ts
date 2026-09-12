@@ -13,10 +13,9 @@ export const company = {
 };
 
 export const contact = {
-  tel: '',
-  fax: '',
-  email: '',
-  address: '',
+  name: '주식회사 도어앤테크',
+  address: '인천광역시 미추홀구 경인로 112, 401호',
+  tel: '대표 전화 1566-0462',
 };
 
 export const footer = {

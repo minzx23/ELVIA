@@ -1,7 +1,8 @@
 import ProductCard from '@/components/product/ProductCard';
-import { company } from '@/data/content';
+import { IconNText } from '@/components/ui/IconNText';
+import { company, contact } from '@/data/content';
 import { products } from '@/data/product';
-import { ChevronRight } from 'lucide-react';
+import { Building2, ChevronRight, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -42,13 +43,13 @@ export default function Home() {
       <div className='flex gap-10 px-16 py-8 lg:py-4'>
         <div className='flex min-w-0 flex-1 flex-col gap-1'>
           <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>회사 소개</h3>
-          <p className='text-[12px]'>{company.desciption}</p>
+          <p className='text-[13px]'>{company.desciption}</p>
         </div>
-        {/* <div className='flex min-w-0 flex-1 items-center justify-center'>
-          <Image src='/ELVIA_logo.png' width={200} height={200} alt='' />
-        </div> */}
-        <div className='flex min-w-0 flex-1'>
+        <div className='flex min-w-0 flex-1 flex-col gap-1'>
           <h3 className='text-[19px] font-bold md:text-[22px] lg:text-[19px]'>고객 지원</h3>
+          <IconNText icon={Building2} text={contact.name} />
+          <IconNText icon={MapPin} text={contact.address} />
+          <IconNText icon={Phone} text={contact.tel} />
         </div>
       </div>
     </div>
